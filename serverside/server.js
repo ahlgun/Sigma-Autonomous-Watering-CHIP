@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 io.on('connection', function(socket) {
     io.emit('saySomething', 'Hello World');
     socket.on('saySomething', function(msg){
-        database.ref('communication/' + 'chip').set(msg);
+        console.log(msg)
     });
 })
 
