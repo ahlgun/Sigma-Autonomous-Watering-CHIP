@@ -4,20 +4,25 @@ var http = require('http');
 var server = http.Server(app);
 var io = require('socket.io')(server);
 
-(function(){
-    let Req = new XMLHttpRequest();
-    Req.open('POST', 'http://localhost:7000/api/cars/filter',  false);
-    Req.setRequestHeader("Content-Type", "application/json");
-    Req.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
+const https = require('https');
 
-            response = JSON.parse(Req.response);
-            console.log(response)
+https.get('https://sigma-itc-watering.herokuapp.com/api', (resp) => {
+    let data;
 
-        }
-    };
+// A chunk of data has been recieved.
+resp.on('data', (chunk) => {
+    data = chunk;
+    console.log(' Our vegetables. For now.')
+});
 
-})();
+// The whole response has been received. Print out the result.
+resp.on('end', () => {
+    console.log(JSON.parse(data));
+});
+
+}).on("error", (err) => {
+    console.log("Error: " + err.message);
+});
 
 server.listen(3000, () => {
     console.log("Nu lyssnar vi på 3000.");
